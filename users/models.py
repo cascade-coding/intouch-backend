@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 import uuid
 from django.utils import timezone
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from cloudinary.models import CloudinaryField
 
 
 GENDER_CHOICES = [
@@ -34,16 +35,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
     )
-    first_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
-    date_of_birth = models.DateField(
-        auto_now=False, auto_now_add=False,
-        null=True,
-        blank=True
-    )
-    gender = models.CharField(
-        max_length=30, choices=GENDER_CHOICES, blank=True
-    )
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -61,13 +52,41 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-    def get_full_name(self):
-        full_name = "%s %s" % (self.first_name, self.last_name)
-        return full_name.strip()
-
-    def get_short_name(self):
-        return self.first_name
-
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class Profile(models.Model):
+    id = models.UUIDField(
+        primary_key=True, editable=False, default=uuid.uuid4
+    )
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE
+    )
+
+    following = models.ManyToManyField(
+        'self', related_name='followers', symmetrical=False, blank=True
+    )
+
+    profile_photo = CloudinaryField(
+        'profile_photo', resource_type='image', blank=True
+    )
+
+    name = models.CharField(max_length=150, blank=True)
+
+    bio = models.TextField(blank=True)
+
+    date_of_birth = models.DateField(
+        auto_now=False, auto_now_add=False,
+        null=True,
+        blank=True
+    )
+
+    gender = models.CharField(
+        max_length=30, choices=GENDER_CHOICES, blank=True
+    )
+
+    def __str__(self):
+        return self.user.username

@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 import os
 from pathlib import Path
+import cloudinary.api
+import cloudinary.uploader
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'djoser',
@@ -142,8 +146,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     'AUTH_HEADER_TYPES': ('JWT',),
@@ -178,3 +182,9 @@ PASSWORD_RESET_TIMEOUT = 600
 AUTH_USER_MODEL = "users.User"
 
 CLIENT_SITE_DOMAIN = 'http://localhost:3000'
+
+cloudinary.config(
+    cloud_name="dsmyfgxd1",
+    api_key="993996834443811",
+    api_secret="Z2obQCAsQhwprRWzMz0vPOho470"
+)
