@@ -19,7 +19,8 @@ class SuggestionsProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["id", "profile_photo", "user"]
+        fields = ["id", "profile_photo",
+                  "total_followers", "total_following", "user"]
 
 
 class UUIDSerializer(serializers.Serializer):

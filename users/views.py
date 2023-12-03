@@ -26,7 +26,8 @@ class GetSuggestions(APIView):
             ).exclude(user__is_active=False)[:6]
 
             serializer = SuggestionsProfileSerializer(
-                instance=records, many=True)
+                instance=records, many=True
+            )
 
             return Response({"suggestions": serializer.data})
         except:

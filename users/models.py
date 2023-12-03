@@ -70,6 +70,10 @@ class Profile(models.Model):
         'self', related_name='followers', symmetrical=False, blank=True
     )
 
+    total_followers = models.IntegerField(default=0)
+
+    total_following = models.IntegerField(default=0)
+
     profile_photo = CloudinaryField(
         'profile_photo', resource_type='image', blank=True
     )
