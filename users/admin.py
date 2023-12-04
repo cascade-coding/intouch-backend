@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from users.models import User, Profile
+from users.models import User, Profile, Post, PostImage, Comment, Reply
+
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -12,7 +13,7 @@ class UserAdmin(BaseUserAdmin):
         ("Permissions", {"fields": [
          "is_active", "is_staff", "is_superuser", "groups", "user_permissions"]}),
     ]
-    
+
     add_fieldsets = [
         (
             None,
@@ -28,6 +29,23 @@ class UserAdmin(BaseUserAdmin):
         "groups",
         "user_permissions",
     )
+
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ["id", "text"]
+
+@admin.register(PostImage)
+class PostImageAdmin(admin.ModelAdmin):
+    list_display = ["id", "image"]
+
+@admin.register(Comment)
+class PostCommentAdmin(admin.ModelAdmin):
+    list_display = ["id", "text"]
+
+@admin.register(Reply)
+class PostReplyCommentAdmin(admin.ModelAdmin):
+    list_display = ["id", "text"]
 
 
 admin.site.register(Profile)

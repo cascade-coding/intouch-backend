@@ -94,3 +94,72 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Post(models.Model):
+    id = models.UUIDField(
+        primary_key=True, editable=False, default=uuid.uuid4
+    )
+
+    profile = models.ForeignKey(
+        to=Profile, related_name='posts', on_delete=models.CASCADE
+    )
+
+    text = models.TextField(blank=True, null=True, default=None)
+
+    likes = models.ManyToManyField(
+        to=Profile, related_name='likes', blank=True
+    )
+
+    like_counts = models.IntegerField(default=0)
+
+
+class PostImage(models.Model):
+    id = models.UUIDField(
+        primary_key=True, editable=False, default=uuid.uuid4
+    )
+    post = models.ForeignKey(
+        to=Post,
+        related_name='post_images',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
+    image = CloudinaryField('image', resource_type='image')
+
+    def __str__(self):
+        return self.post.text
+
+
+class Comment(models.Model):
+    id = models.UUIDField(
+        primary_key=True, editable=False, default=uuid.uuid4
+    )
+    post = models.ForeignKey(
+        to=Post, on_delete=models.CASCADE,
+        related_name='comments', null=True, blank=True
+    )
+
+    text = models.TextField()
+
+    comment_counts = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.text
+
+
+class Reply(models.Model):
+    id = models.UUIDField(
+        primary_key=True, editable=False, default=uuid.uuid4
+    )
+    comment = models.ForeignKey(
+        to=Comment, on_delete=models.CASCADE, related_name='replies'
+    )
+
+    text = models.TextField()
+
+    reply_counts = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.text
