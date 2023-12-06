@@ -111,7 +111,25 @@ class Post(models.Model):
         to=Profile, related_name='likes', blank=True
     )
 
+    dislikes = models.ManyToManyField(
+        to=Profile, related_name='dislikes', blank=True
+    )
+
     like_counts = models.IntegerField(default=0)
+
+    dislike_counts = models.IntegerField(default=0)
+
+    comment_counts = models.IntegerField(default=0)
+
+    def like_post(self, user_profile):
+        if user_profile in self.dislikes.all():
+            self.dislikes.remove(user_profile)
+        self.likes.add(user_profile)
+
+    def dislike_post(self, user_profile):
+        if user_profile in self.likes.all():
+            self.likes.remove(user_profile)
+        self.dislikes.add(user_profile)
 
 
 class PostImage(models.Model):
@@ -128,25 +146,32 @@ class PostImage(models.Model):
 
     image = CloudinaryField('image', resource_type='image')
 
-    def __str__(self):
-        return self.post.text
-
 
 class Comment(models.Model):
     id = models.UUIDField(
         primary_key=True, editable=False, default=uuid.uuid4
     )
+
     post = models.ForeignKey(
         to=Post, on_delete=models.CASCADE,
         related_name='comments', null=True, blank=True
     )
 
+    likes = models.ManyToManyField(
+        to=Profile, related_name='comment_likes', blank=True
+    )
+
+    dislikes = models.ManyToManyField(
+        to=Profile, related_name='comment_dislikes', blank=True
+    )
+
+    like_counts = models.IntegerField(default=0)
+
+    dislike_counts = models.IntegerField(default=0)
+
     text = models.TextField()
 
-    comment_counts = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.text
+    reply_counts = models.IntegerField(default=0)
 
 
 class Reply(models.Model):
@@ -157,9 +182,16 @@ class Reply(models.Model):
         to=Comment, on_delete=models.CASCADE, related_name='replies'
     )
 
+    likes = models.ManyToManyField(
+        to=Profile, related_name='reply_likes', blank=True
+    )
+
+    dislikes = models.ManyToManyField(
+        to=Profile, related_name='reply_dislikes', blank=True
+    )
+
+    like_counts = models.IntegerField(default=0)
+
+    dislike_counts = models.IntegerField(default=0)
+
     text = models.TextField()
-
-    reply_counts = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.text

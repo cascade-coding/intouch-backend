@@ -62,3 +62,8 @@ class AddNewPostView(APIView):
             info_serializer.data,
             status=status.HTTP_201_CREATED
         )
+
+
+class GetHomePosts(APIView):
+    def get(self, request):
+        return Response({"message": "posts"})
