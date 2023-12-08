@@ -36,7 +36,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ["id", "text", "like_counts", "dislike_counts"]
 
     fieldsets = [
-        (None, {"fields": ["profile", "text"]}),
+        (None, {"fields": ["profile", "text", "like_counts", "comment_counts"]}),
     ]
 
 

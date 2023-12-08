@@ -88,3 +88,14 @@ class PostInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'like_counts', 'comments', 'text', 'post_images')
+
+
+class TrendingPostInfoSerializer(serializers.ModelSerializer):
+    post_images = PostImageSerializer(many=True)
+
+    class Meta:
+        model = Post
+        fields = (
+            'id', 'like_counts', 'dislike_counts',
+            'comment_counts', 'text', 'post_images'
+        )

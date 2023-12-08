@@ -121,6 +121,10 @@ class Post(models.Model):
 
     comment_counts = models.IntegerField(default=0)
 
+    created_at = models.DateTimeField(default=timezone.now)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
     def like_post(self, user_profile):
         if user_profile in self.dislikes.all():
             self.dislikes.remove(user_profile)

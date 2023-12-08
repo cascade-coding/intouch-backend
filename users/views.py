@@ -1,9 +1,12 @@
+from rest_framework.pagination import CursorPagination
+from django.db.models import F
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from django.utils import timezone
+from datetime import timedelta
 from users.models import Profile, User, Post
-from users.serializers import SuggestionsProfileSerializer, UserProfileSerializer, PostSerializer, PostInfoSerializer
+from users.serializers import SuggestionsProfileSerializer, UserProfileSerializer, PostSerializer, PostInfoSerializer, TrendingPostInfoSerializer
 
 
 class GetSuggestions(APIView):
@@ -64,6 +67,34 @@ class AddNewPostView(APIView):
         )
 
 
-class GetHomePosts(APIView):
+class GetHomePosts(APIView, CursorPagination):
+    page_size = 50
+    ordering = '-trend_score'
+
     def get(self, request):
-        return Response({"message": "posts"})
+        user_profile = Profile.objects.get(user_id=request.user.id)
+
+        date_range = timezone.now() - timedelta(days=5)
+
+        # Get the posts of the users they are following
+        following = user_profile.following.all()
+
+        following_posts = Post.objects.filter(
+            profile__in=following,
+            created_at__gte=date_range
+        )
+
+        trending_posts = following_posts.annotate(
+            trend_score=F('like_counts') + F('comment_counts') * 2
+        ).order_by('-trend_score')
+
+        paginated_posts = self.paginate_queryset(
+            trending_posts, request=request)
+
+        serializer = TrendingPostInfoSerializer(
+            instance=paginated_posts, many=True
+        )
+
+        return self.get_paginated_response(
+            {"posts": serializer.data}
+        )
