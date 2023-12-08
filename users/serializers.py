@@ -16,11 +16,18 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
 class SuggestionsProfileSerializer(serializers.ModelSerializer):
     user = UserInfoSerializer()
+    is_following = serializers.SerializerMethodField()
+
+    def get_is_following(self, profile):
+        request = self.context.get('request', None)
+        return profile.followers.filter(id=request.user.profile.id).exists()
 
     class Meta:
         model = Profile
-        fields = ["id", "profile_photo",
-                  "total_followers", "total_following", "user"]
+        fields = [
+            "id", "profile_photo",
+            "total_followers", "total_following", "user", "is_following"
+        ]
 
 
 """
@@ -92,10 +99,20 @@ class PostInfoSerializer(serializers.ModelSerializer):
 
 class TrendingPostInfoSerializer(serializers.ModelSerializer):
     post_images = PostImageSerializer(many=True)
+    user_liked = serializers.SerializerMethodField()
+    user_disliked = serializers.SerializerMethodField()
+
+    def get_user_liked(self, post):
+        request = self.context.get('request', None)
+        return post.likes.filter(id=request.user.profile.id).exists()
+
+    def get_user_disliked(self, post):
+        request = self.context.get('request', None)
+        return post.dislikes.filter(id=request.user.profile.id).exists()
 
     class Meta:
         model = Post
         fields = (
-            'id', 'like_counts', 'dislike_counts',
+            'id', 'user_liked', 'user_disliked', 'like_counts', 'dislike_counts',
             'comment_counts', 'text', 'post_images'
         )

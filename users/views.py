@@ -21,7 +21,7 @@ class GetSuggestions(APIView):
             ).exclude(user__is_active=False).order_by('-total_followers')[:6]
 
             serializer = SuggestionsProfileSerializer(
-                instance=top_profiles, many=True
+                instance=top_profiles, many=True, context={"request": request}
             )
 
             return Response({"suggestions": serializer.data})
@@ -102,7 +102,7 @@ class GetHomePosts(APIView, CursorPagination):
         )
 
         serializer = TrendingPostInfoSerializer(
-            instance=paginated_posts, many=True
+            instance=paginated_posts, many=True, context={"request": request}
         )
 
         return self.get_paginated_response(
