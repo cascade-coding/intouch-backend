@@ -92,8 +92,9 @@ class Profile(models.Model):
         max_length=30, choices=GENDER_CHOICES, blank=True
     )
 
-    def __str__(self):
-        return self.user.username
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Post(models.Model):
@@ -121,7 +122,7 @@ class Post(models.Model):
 
     comment_counts = models.IntegerField(default=0)
 
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -150,6 +151,10 @@ class PostImage(models.Model):
 
     image = CloudinaryField('image', resource_type='image')
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class Comment(models.Model):
     id = models.UUIDField(
@@ -177,6 +182,10 @@ class Comment(models.Model):
 
     reply_counts = models.IntegerField(default=0)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class Reply(models.Model):
     id = models.UUIDField(
@@ -199,3 +208,7 @@ class Reply(models.Model):
     dislike_counts = models.IntegerField(default=0)
 
     text = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
