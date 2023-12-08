@@ -12,24 +12,16 @@ from users.serializers import SuggestionsProfileSerializer, UserProfileSerialize
 class GetSuggestions(APIView):
     def get(self, request):
         try:
-            user_profile = Profile.objects.get(
-                user_id=request.user.id
-            )
+            user_profile = Profile.objects.get(user_id=request.user.id)
 
-            serializer = UserProfileSerializer(instance=user_profile)
+            following = user_profile.following.all()
 
-            following = serializer.data["following"]
-
-            following_ids = list(map(str, following))
-
-            following_ids.append(request.user.profile.id)
-
-            records = Profile.objects.exclude(
-                id__in=following_ids
-            ).exclude(user__is_active=False)[:6]
+            top_profiles = Profile.objects.exclude(
+                id__in=following
+            ).exclude(user__is_active=False).order_by('-total_followers')[:6]
 
             serializer = SuggestionsProfileSerializer(
-                instance=records, many=True
+                instance=top_profiles, many=True
             )
 
             return Response({"suggestions": serializer.data})
@@ -84,17 +76,35 @@ class GetHomePosts(APIView, CursorPagination):
             created_at__gte=date_range
         )
 
+        # if no posts found in the range of last five days
+        if not following_posts:
+            following_posts = Post.objects.filter(
+                profile__in=following
+            )
+
+        # if there is no posts at all
+        if not following_posts:
+            top_profiles = Profile.objects.exclude(
+                id__in=following
+            ).exclude(user__is_active=False).order_by('-total_followers')[:6]
+
+            following_posts = Post.objects.filter(
+                profile__in=top_profiles,
+                created_at__gte=date_range
+            )
+
         trending_posts = following_posts.annotate(
             trend_score=F('like_counts') + F('comment_counts') * 2
         ).order_by('-trend_score')
 
         paginated_posts = self.paginate_queryset(
-            trending_posts, request=request)
+            trending_posts, request=request
+        )
 
         serializer = TrendingPostInfoSerializer(
             instance=paginated_posts, many=True
         )
 
         return self.get_paginated_response(
-            {"posts": serializer.data}
+            serializer.data
         )
