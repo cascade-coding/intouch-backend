@@ -97,7 +97,14 @@ class PostInfoSerializer(serializers.ModelSerializer):
         fields = ('id', 'like_counts', 'comments', 'text', 'post_images')
 
 
+class ProfileInfoSerializer(serializers.ModelSerializer):
+    user = UserInfoSerializer(read_only=True)
+    class Meta:
+        model = Profile
+        fields = ["id", "profile_photo", "user"]
+
 class TrendingPostInfoSerializer(serializers.ModelSerializer):
+    profile = ProfileInfoSerializer(read_only=True)
     post_images = PostImageSerializer(many=True)
     user_liked = serializers.SerializerMethodField()
     user_disliked = serializers.SerializerMethodField()
@@ -113,6 +120,6 @@ class TrendingPostInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = (
-            'id', 'user_liked', 'user_disliked', 'like_counts', 'dislike_counts',
+            'id', 'profile', 'user_liked', 'user_disliked', 'like_counts', 'dislike_counts',
             'comment_counts', 'text', 'post_images'
         )
