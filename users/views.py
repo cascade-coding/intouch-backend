@@ -152,3 +152,16 @@ class HandleFollowingView(APIView):
             request.user.profile.following.add(profile)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SearchProfileView(APIView):
+    def get(self, request, search=""):
+        profile = Profile.objects.filter(user__username__iexact=search)
+
+        serializer = SuggestionsProfileSerializer(
+            instance=profile,
+            many=True,
+            context={"request": request}
+        )
+        
+        return Response({"profiles": serializer.data})

@@ -8,4 +8,6 @@ urlpatterns = [
     path('add_new_post/', views.AddNewPostView.as_view()),
     path('home/posts/', views.GetHomePosts.as_view()),
     path('handle_following/', views.HandleFollowingView.as_view()),
+    path('search_profile/<str:search>/', views.SearchProfileView.as_view()),
 ]
+ 
