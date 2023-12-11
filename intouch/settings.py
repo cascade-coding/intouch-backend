@@ -159,9 +159,9 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'USER_CREATE_PASSWORD_RETYPE': True,
-    # 'SERIALIZERS': {
-    #     'current_user': 'authentication.serializers.UserSerializer',
-    # }
+    'SERIALIZERS': {
+        'current_user': 'users.serializers.UserSerializer',
+    },
     'EMAIL': {
         'activation': 'users.email.ActivationEmail',
         'confirmation': 'users.email.ConfirmationEmail',

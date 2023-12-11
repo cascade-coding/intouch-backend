@@ -5,7 +5,15 @@ from users.models import Profile, User, Comment, Reply, Post, PostImage
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = "__all__"
+        fields = ["id", "profile_photo"]
+
+
+class UserSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "profile"]
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
