@@ -1,3 +1,4 @@
+from uuid import UUID
 from rest_framework.pagination import CursorPagination
 from django.db.models import F
 from rest_framework.views import APIView
@@ -6,25 +7,45 @@ from rest_framework import status
 from django.utils import timezone
 from datetime import timedelta
 from users.models import Profile, User, Post
-from users.serializers import SuggestionsProfileSerializer, UserProfileSerializer, PostSerializer, PostInfoSerializer, TrendingPostInfoSerializer
+from users.serializers import SuggestionsProfileSerializer, FindProfileSerializer, PostSerializer, PostInfoSerializer, TrendingPostInfoSerializer
+from django.shortcuts import get_object_or_404
 
 
-class GetSuggestions(APIView):
+class GetSuggestions(APIView, CursorPagination):
+    page_size = 20
+    ordering = '-total_followers'
+
     def get(self, request):
         try:
-            user_profile = Profile.objects.get(user_id=request.user.id)
+            top = request.GET.get("top", None)
 
-            following = user_profile.following.all()
+            following = request.user.profile.following.all()
 
             top_profiles = Profile.objects.exclude(
                 id__in=following
-            ).exclude(user__is_active=False).order_by('-total_followers')[:6]
+            ).exclude(user__is_active=False).order_by('-total_followers')
 
-            serializer = SuggestionsProfileSerializer(
-                instance=top_profiles, many=True, context={"request": request}
+            if top:
+                top_profiles = top_profiles[:6]
+
+                serializer = SuggestionsProfileSerializer(
+                    instance=top_profiles, many=True, context={"request": request}
+                )
+
+                return Response({"suggestions": serializer.data})
+
+            paginated_profiles = self.paginate_queryset(
+                top_profiles, request=request
             )
 
-            return Response({"suggestions": serializer.data})
+            serializer = SuggestionsProfileSerializer(
+                instance=paginated_profiles, many=True, context={"request": request}
+            )
+
+            return self.get_paginated_response(
+                serializer.data
+            )
+
         except:
             return Response({"message": "something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -108,3 +129,26 @@ class GetHomePosts(APIView, CursorPagination):
         return self.get_paginated_response(
             serializer.data
         )
+
+
+class HandleFollowingView(APIView):
+    def post(self, request):
+        id = request.data.get("id", None)
+        if id:
+            try:
+                request.data["id"] = UUID(request.data["id"])
+            except:
+                pass
+
+        serializer = FindProfileSerializer(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+
+        profile = get_object_or_404(Profile, id=serializer.data.get("id"))
+
+        if profile in request.user.profile.following.all():
+            request.user.profile.following.remove(profile)
+        else:
+            request.user.profile.following.add(profile)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

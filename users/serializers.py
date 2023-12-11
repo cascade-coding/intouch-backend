@@ -99,9 +99,11 @@ class PostInfoSerializer(serializers.ModelSerializer):
 
 class ProfileInfoSerializer(serializers.ModelSerializer):
     user = UserInfoSerializer(read_only=True)
+
     class Meta:
         model = Profile
         fields = ["id", "profile_photo", "user"]
+
 
 class TrendingPostInfoSerializer(serializers.ModelSerializer):
     profile = ProfileInfoSerializer(read_only=True)
@@ -123,3 +125,7 @@ class TrendingPostInfoSerializer(serializers.ModelSerializer):
             'id', 'profile', 'user_liked', 'user_disliked', 'like_counts', 'dislike_counts',
             'comment_counts', 'text', 'post_images'
         )
+
+
+class FindProfileSerializer(serializers.Serializer):
+    id = serializers.UUIDField()

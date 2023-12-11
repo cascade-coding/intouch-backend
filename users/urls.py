@@ -7,4 +7,5 @@ urlpatterns = [
     path('suggestions/', views.GetSuggestions.as_view()),
     path('add_new_post/', views.AddNewPostView.as_view()),
     path('home/posts/', views.GetHomePosts.as_view()),
+    path('handle_following/', views.HandleFollowingView.as_view()),
 ]
