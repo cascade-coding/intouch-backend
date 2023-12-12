@@ -36,7 +36,8 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ["id", "text", "like_counts", "dislike_counts"]
 
     fieldsets = [
-        (None, {"fields": ["profile", "text", "like_counts", "comment_counts"]}),
+        (None, {"fields": ["profile", "text",
+         "like_counts", "comment_counts"]}),
     ]
 
 
@@ -48,7 +49,7 @@ class PostImageAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class PostCommentAdmin(admin.ModelAdmin):
     list_display = ["id", "text", "like_counts", "dislike_counts"]
-    
+
     fieldsets = [
         (None, {"fields": ["post", "text"]}),
     ]
@@ -57,10 +58,12 @@ class PostCommentAdmin(admin.ModelAdmin):
 @admin.register(Reply)
 class PostReplyCommentAdmin(admin.ModelAdmin):
     list_display = ["id", "text", "like_counts", "dislike_counts"]
-    
+
     fieldsets = [
         (None, {"fields": ["comment", "text"]}),
     ]
 
 
-admin.site.register(Profile)
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ["id", "user"]
