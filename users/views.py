@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 
 
 class GetSuggestions(APIView, CursorPagination):
-    page_size = 20
+    page_size = 15
     ordering = '-total_followers'
 
     def get(self, request):
@@ -163,5 +163,15 @@ class SearchProfileView(APIView):
             many=True,
             context={"request": request}
         )
-        
+
         return Response({"profiles": serializer.data})
+
+
+class ActivateUsersView(APIView):
+    def get(self, request):
+        users = User.objects.filter(is_active=False)
+
+        for user in users:
+            user.is_active = True
+            user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
