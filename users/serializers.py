@@ -137,3 +137,6 @@ class TrendingPostInfoSerializer(serializers.ModelSerializer):
 
 class FindProfileSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+
+class FindPostSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
