@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -181,7 +181,7 @@ PASSWORD_RESET_TIMEOUT = 600
 
 AUTH_USER_MODEL = "users.User"
 
-CLIENT_SITE_DOMAIN = 'http://localhost:3000'
+CLIENT_SITE_DOMAIN = 'localhost:5173'
 
 cloudinary.config(
     cloud_name="dsmyfgxd1",
