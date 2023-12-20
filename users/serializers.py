@@ -169,6 +169,16 @@ class PostAddCommentSerializer(serializers.ModelSerializer):
             "text",
         ]
 
+class AddPostCommentReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = [
+            "id",
+            "comment",
+            "profile",
+            "text",
+        ]
+
 
 class PostCommentReplySerializer(serializers.ModelSerializer):
     profile = ProfileInfoSerializer(read_only=True)

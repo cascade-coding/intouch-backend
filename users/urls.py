@@ -14,4 +14,5 @@ urlpatterns = [
     path('get_post_comments/', views.GetPostCommentsView.as_view()),
     path('add_post_comments/', views.AddPostCommentsView.as_view()),
     path('get_post_comment_replies/', views.GetPostCommentRepliesView.as_view()),
+    path('add_post_comment_reply/', views.AddPostCommentReplyView.as_view()),
 ]
