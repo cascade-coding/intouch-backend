@@ -159,7 +159,7 @@ class PostCommentSerializer(serializers.ModelSerializer):
         ]
 
 
-class PostAddCommentSerializer(serializers.ModelSerializer):
+class AddPostCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [

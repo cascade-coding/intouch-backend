@@ -2,11 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from users.models import Post
-from users.serializers import PostAddCommentSerializer, ProfileInfoSerializer
+from users.serializers import AddPostCommentSerializer, ProfileInfoSerializer
 from django.shortcuts import get_object_or_404
 
 
-class AddPostCommentsView(APIView):
+class AddPostCommentView(APIView):
     def post(self, request):
         post_id = request.data.get("post_id", None)
 
@@ -20,7 +20,7 @@ class AddPostCommentsView(APIView):
         request.data["post"] = post.id
         request.data["profile"] = request.user.profile.id
 
-        serializer = PostAddCommentSerializer(data=request.data)
+        serializer = AddPostCommentSerializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)
 
