@@ -157,3 +157,18 @@ class PostCommentSerializer(serializers.ModelSerializer):
             "reply_counts",
             "created_at"
         ]
+
+
+class PostCommentReplySerializer(serializers.ModelSerializer):
+    profile = ProfileInfoSerializer(read_only=True)
+
+    class Meta:
+        model = Reply
+        fields = [
+            "id",
+            "profile",
+            "text",
+            "like_counts",
+            "dislike_counts",
+            "created_at"
+        ]

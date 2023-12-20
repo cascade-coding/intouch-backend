@@ -12,4 +12,5 @@ urlpatterns = [
     path('activate_users/', views.ActivateUsersView.as_view()),
     path('toggle_post_like/', views.TogglePostLikeView.as_view()),
     path('get_post_comments/', views.GetPostCommentsView.as_view()),
+    path('get_post_comment_replies/', views.GetPostCommentRepliesView.as_view()),
 ]
