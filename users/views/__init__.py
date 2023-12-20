@@ -7,3 +7,4 @@ from users.views.ActivateUsersView import ActivateUsersView
 from users.views.TogglePostLikeView import TogglePostLikeView
 from users.views.GetPostCommentsView import GetPostCommentsView
 from users.views.GetPostCommentRepliesView import GetPostCommentRepliesView
+from users.views.AddPostCommentsView import AddPostCommentsView
