@@ -11,4 +11,5 @@ urlpatterns = [
     path('search_profile/<str:search>/', views.SearchProfileView.as_view()),
     path('activate_users/', views.ActivateUsersView.as_view()),
     path('toggle_post_like/', views.TogglePostLikeView.as_view()),
+    path('get_post_comments/', views.GetPostCommentsView.as_view()),
 ]

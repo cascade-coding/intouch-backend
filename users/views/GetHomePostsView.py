@@ -8,7 +8,7 @@ from users.serializers import TrendingPostInfoSerializer
 
 
 class GetHomePostsView(APIView, CursorPagination):
-    page_size = 50
+    page_size = 10
     ordering = '-trend_score'
 
     def get(self, request):
@@ -21,7 +21,7 @@ class GetHomePostsView(APIView, CursorPagination):
 
         following_posts = Post.objects.filter(
             profile__in=following,
-            created_at__gte=date_range
+            # created_at__gte=date_range
         )
 
         # if no posts found in the range of last five days

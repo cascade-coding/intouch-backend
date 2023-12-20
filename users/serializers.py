@@ -138,5 +138,22 @@ class TrendingPostInfoSerializer(serializers.ModelSerializer):
 class FindProfileSerializer(serializers.Serializer):
     id = serializers.UUIDField()
 
+
 class FindPostSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+
+
+class PostCommentSerializer(serializers.ModelSerializer):
+    profile = ProfileInfoSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = [
+            "id",
+            "profile",
+            "text",
+            "like_counts",
+            "dislike_counts",
+            "reply_counts",
+            "created_at"
+        ]

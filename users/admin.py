@@ -51,7 +51,7 @@ class PostCommentAdmin(admin.ModelAdmin):
     list_display = ["id", "text", "like_counts", "dislike_counts"]
 
     fieldsets = [
-        (None, {"fields": ["post", "text"]}),
+        (None, {"fields": ["profile", "post", "text"]}),
     ]
 
 
@@ -60,7 +60,7 @@ class PostReplyCommentAdmin(admin.ModelAdmin):
     list_display = ["id", "text", "like_counts", "dislike_counts"]
 
     fieldsets = [
-        (None, {"fields": ["comment", "text"]}),
+        (None, {"fields": ["profile", "comment", "text"]}),
     ]
 
 

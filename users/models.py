@@ -19,7 +19,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
 
     id = models.UUIDField(
-        primary_key=True, editable=False, default=uuid.uuid4
+        unique=True,
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
     )
     username = models.CharField(
         max_length=150,
@@ -49,9 +52,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
 
-    def __str__(self):
-        return self.email
-
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
@@ -59,7 +59,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     id = models.UUIDField(
-        primary_key=True, editable=False, default=uuid.uuid4
+        unique=True,
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
     )
 
     user = models.OneToOneField(
@@ -99,7 +102,10 @@ class Profile(models.Model):
 
 class Post(models.Model):
     id = models.UUIDField(
-        primary_key=True, editable=False, default=uuid.uuid4
+        unique=True,
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
     )
 
     profile = models.ForeignKey(
@@ -139,8 +145,12 @@ class Post(models.Model):
 
 class PostImage(models.Model):
     id = models.UUIDField(
-        primary_key=True, editable=False, default=uuid.uuid4
+        unique=True,
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
     )
+
     post = models.ForeignKey(
         to=Post,
         related_name='post_images',
@@ -158,13 +168,18 @@ class PostImage(models.Model):
 
 class Comment(models.Model):
     id = models.UUIDField(
-        primary_key=True, editable=False, default=uuid.uuid4
+        unique=True,
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
     )
 
     post = models.ForeignKey(
         to=Post, on_delete=models.CASCADE,
         related_name='comments', null=True, blank=True
     )
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     likes = models.ManyToManyField(
         to=Profile, related_name='comment_likes', blank=True
@@ -189,11 +204,17 @@ class Comment(models.Model):
 
 class Reply(models.Model):
     id = models.UUIDField(
-        primary_key=True, editable=False, default=uuid.uuid4
+        unique=True,
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
     )
+    
     comment = models.ForeignKey(
         to=Comment, on_delete=models.CASCADE, related_name='replies'
     )
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     likes = models.ManyToManyField(
         to=Profile, related_name='reply_likes', blank=True
