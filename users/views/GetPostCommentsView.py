@@ -8,7 +8,7 @@ from django.db.models import F
 
 
 class GetPostCommentsView(APIView, CursorPagination):
-    page_size = 10
+    page_size = 5
     ordering = "-trend_score"
 
     def post(self, request):
