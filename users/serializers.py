@@ -131,7 +131,7 @@ class TrendingPostInfoSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             'id', 'profile', 'user_liked', 'user_disliked', 'like_counts', 'dislike_counts',
-            'comment_counts', 'text', 'post_images'
+            'comment_counts', 'text', 'post_images', 'created_at'
         )
 
 
