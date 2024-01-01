@@ -8,8 +8,8 @@ from django.db.models import F
 
 
 class GetPostCommentRepliesView(APIView, CursorPagination):
-    page_size = 10
-    ordering = "-trend_score"
+    page_size = 2
+    ordering = "-created_at"
 
     def post(self, request):
         id = request.data.get("id", None)
@@ -21,9 +21,7 @@ class GetPostCommentRepliesView(APIView, CursorPagination):
             )
 
         try:
-            replies = Reply.objects.filter(comment_id=id).annotate(
-                trend_score=F('like_counts') + F('dislike_counts') * 2
-            ).order_by('-trend_score')
+            replies = Reply.objects.filter(comment_id=id)
 
             paginated_replies = self.paginate_queryset(
                 replies, request=request
