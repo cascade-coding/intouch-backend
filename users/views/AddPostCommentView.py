@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from users.models import Post
-from users.serializers import AddPostCommentSerializer, ProfileInfoSerializer
+from users.models import Post, Comment
+from users.serializers import AddPostCommentSerializer,  PostCommentSerializer
 from django.shortcuts import get_object_or_404
 
 
@@ -27,16 +27,12 @@ class AddPostCommentView(APIView):
         try:
             serializer.save()
 
-            profileSerializer = ProfileInfoSerializer(
-                instance=request.user.profile
-            )
+            comment_obj = get_object_or_404(Comment, id=serializer.data["id"])
 
-            serializer_data = serializer.data
-
-            serializer_data["profile"] = profileSerializer.data
+            new_comment = PostCommentSerializer(instance=comment_obj)
 
             return Response(
-                serializer_data,
+                new_comment.data,
                 status=status.HTTP_200_OK
             )
         except:
