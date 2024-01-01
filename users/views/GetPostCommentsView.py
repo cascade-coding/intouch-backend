@@ -30,7 +30,8 @@ class GetPostCommentsView(APIView, CursorPagination):
             )
 
             serializer = PostCommentSerializer(
-                instance=paginated_comments, many=True
+                instance=paginated_comments, many=True,
+                context={"request": request}
             )
         except:
             return Response(
