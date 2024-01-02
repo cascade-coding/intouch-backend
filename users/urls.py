@@ -15,4 +15,8 @@ urlpatterns = [
     path('add_post_comment/', views.AddPostCommentView.as_view()),
     path('get_post_comment_replies/', views.GetPostCommentRepliesView.as_view()),
     path('add_post_comment_reply/', views.AddPostCommentReplyView.as_view()),
+    path('toggle_comment_like/', views.ToggleCommentLikeView.as_view()),
+    path('toggle_comment_dislike/', views.ToggleCommentDislikeView.as_view()),
+    path('toggle_reply_like/', views.ToggleReplyLikeView.as_view()),
+    path('toggle_reply_dislike/', views.ToggleReplyDislikeView.as_view()),
 ]

@@ -9,3 +9,7 @@ from users.views.GetPostCommentsView import GetPostCommentsView
 from users.views.GetPostCommentRepliesView import GetPostCommentRepliesView
 from users.views.AddPostCommentView import AddPostCommentView
 from users.views.AddPostCommentReplyView import AddPostCommentReplyView
+from users.views.ToggleCommentLikeView import ToggleCommentLikeView
+from users.views.ToggleCommentDislikeView import ToggleCommentDislikeView
+from users.views.ToggleReplyLikeView import ToggleReplyLikeView
+from users.views.ToggleReplyDislikeView import ToggleReplyDislikeView
