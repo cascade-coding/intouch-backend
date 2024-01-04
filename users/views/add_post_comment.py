@@ -29,7 +29,8 @@ class AddPostCommentView(APIView):
 
             comment_obj = get_object_or_404(Comment, id=serializer.data["id"])
 
-            new_comment = PostCommentSerializer(instance=comment_obj)
+            new_comment = PostCommentSerializer(
+                instance=comment_obj, context={"request": request})
 
             return Response(
                 new_comment.data,
