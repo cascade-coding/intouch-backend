@@ -19,4 +19,5 @@ urlpatterns = [
     path('toggle_comment_dislike/', views.ToggleCommentDislikeView.as_view()),
     path('toggle_reply_like/', views.ToggleReplyLikeView.as_view()),
     path('toggle_reply_dislike/', views.ToggleReplyDislikeView.as_view()),
+    path('edit_profile/', views.EditProfileView.as_view()),
 ]

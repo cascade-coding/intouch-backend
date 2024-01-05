@@ -29,3 +29,13 @@ class ProfileInfoSerializer(serializers.ModelSerializer):
 
 class FindProfileSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+
+
+class EditProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Profile
+        fields = [
+            "id", "profile_photo", "name",
+            "bio", "gender", "date_of_birth"
+        ]

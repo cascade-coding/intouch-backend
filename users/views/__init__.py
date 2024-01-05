@@ -13,3 +13,4 @@ from users.views.toggle_comment_like import ToggleCommentLikeView
 from users.views.toggle_comment_dislike import ToggleCommentDislikeView
 from users.views.toggle_reply_like import ToggleReplyLikeView
 from users.views.toggle_reply_dislike import ToggleReplyDislikeView
+from users.views.edit_profile import EditProfileView
