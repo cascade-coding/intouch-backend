@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from users.models import Post
-from users.serializers import PostSerializer, PostInfoSerializer
+from users.serializers import PostSerializer, TrendingPostInfoSerializer
 
 
 class AddNewPostView(APIView):
@@ -27,7 +27,9 @@ class AddNewPostView(APIView):
 
         post = Post.objects.get(id=serializer.data["id"])
 
-        info_serializer = PostInfoSerializer(instance=post)
+        info_serializer = TrendingPostInfoSerializer(
+            instance=post, context={"request": request}
+        )
 
         return Response(
             info_serializer.data,
