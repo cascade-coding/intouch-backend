@@ -9,7 +9,7 @@ from users.serializers import TrendingPostInfoSerializer
 
 class GetHomePostsView(APIView, CursorPagination):
     page_size = 10
-    ordering = '-trend_score'
+    ordering = ['-created_at']
 
     def get(self, request):
         user_profile = Profile.objects.get(user_id=request.user.id)
