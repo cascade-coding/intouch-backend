@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import post_save, m2m_changed, post_delete
 from django.dispatch import receiver
 from users.models import User, Profile, Comment, Reply, Post
 
@@ -10,6 +10,20 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile.save()
         user_profile.following.set([instance.profile.id])
         user_profile.save()
+
+
+@receiver(post_save, sender=Post)
+def create_profile(sender, instance, created, **kwargs):
+    if (created):
+        instance.profile.total_posts = instance.profile.posts.count()
+        instance.profile.save()
+
+
+@receiver(post_delete, sender=Post)
+def create_profile(sender, instance, created, **kwargs):
+    if (created):
+        instance.profile.total_posts = instance.profile.posts.count()
+        instance.profile.save()
 
 
 @receiver(m2m_changed, sender=Profile.following.through)

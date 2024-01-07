@@ -30,6 +30,8 @@ class Profile(models.Model):
 
     total_following = models.IntegerField(default=0)
 
+    total_posts = models.IntegerField(default=0)
+
     profile_photo = CloudinaryField(
         'profile_photo', resource_type='image', blank=True
     )
