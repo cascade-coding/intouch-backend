@@ -12,7 +12,7 @@ class GetHomePostsView(APIView, CursorPagination):
     ordering = ['-created_at']
 
     def get(self, request):
-        user_profile = Profile.objects.get(user_id=request.user.id)
+        user_profile = request.user.profile
 
         date_range = timezone.now() - timedelta(days=5)
 
