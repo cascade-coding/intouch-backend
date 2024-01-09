@@ -16,3 +16,4 @@ from users.views.post.toggle_reply_dislike import ToggleReplyDislikeView
 from users.views.profile.edit_profile import EditProfileView
 from users.views.profile.get_profile import GetProfileView
 from users.views.profile.profile_posts import ProfilePostsView
+from users.views.profile.profile_posts import DeletePostView
