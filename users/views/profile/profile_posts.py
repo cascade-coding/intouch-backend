@@ -8,12 +8,10 @@ from django.shortcuts import get_object_or_404
 
 
 class ProfilePostsView(APIView, CursorPagination):
-    page_size = 20
+    page_size = 5
     ordering = ['-created_at']
 
-    def post(self, request):
-        profile_id = request.data.get("profileId", None)
-
+    def get(self, request, profile_id=None):
         user_profile = get_object_or_404(Profile, id=profile_id)
 
         posts = user_profile.posts.all()
