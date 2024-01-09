@@ -20,10 +20,9 @@ def create_profile(sender, instance, created, **kwargs):
 
 
 @receiver(post_delete, sender=Post)
-def create_profile(sender, instance, created, **kwargs):
-    if (created):
-        instance.profile.total_posts = instance.profile.posts.count()
-        instance.profile.save()
+def create_profile(sender, instance, **kwargs):
+    instance.profile.total_posts = instance.profile.posts.count()
+    instance.profile.save()
 
 
 @receiver(m2m_changed, sender=Profile.following.through)
