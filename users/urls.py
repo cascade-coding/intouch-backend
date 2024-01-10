@@ -23,4 +23,5 @@ urlpatterns = [
     path('profile/<str:username>/', views.GetProfileView.as_view()),
     path('profile_posts/<str:profile_id>/', views.ProfilePostsView.as_view()),
     path('delete_profile_posts/', views.DeletePostView.as_view()),
+    path('delete_account/', views.DeleteAccountView.as_view()),
 ]
